@@ -1,17 +1,20 @@
 import configparser
-from time import sleep
+import pandas as pd
+from time import sleep, strftime
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 def readconfigfile(file = 'config.ini'):
 
-    global CSVFILE, TXTLOGS, TIME_OUT, TIME_SLEEP, CSS, IMG, FLV, IMDb_mail, IMDb_pass, IMDb_auth, IMDb_stat, browser
+    global XLSFILE, TXTLOGS, TIME_OUT, TIME_SLEEP, CSS, IMG, FLV, \
+        IMDb_mail, IMDb_pass, IMDb_auth, IMDb_stat, browser, LOGS
+
     config = configparser.ConfigParser()
 
     try:
         config.read(file)
 
-        CSVFILE     = config.get('SETTINGS', 'FILE')
+        XLSFILE     = config.get('SETTINGS', 'FILE')
         TXTLOGS     = config.get('SETTINGS', 'LOGS')
         TIME_OUT    = config.get('SETTINGS', 'TIME_OUT')
         TIME_SLEEP  = config.get('SETTINGS', 'TIME_SLEEP')
@@ -23,13 +26,17 @@ def readconfigfile(file = 'config.ini'):
         IMDb_auth   = config.get('IMDb', 'IMDb_auth')
         IMDb_stat   = False
 
+        LOGS       = open(TXTLOGS, 'a')
+        LOGS.write('START: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
+
         #####################################################################################
         browserProfile = webdriver.FirefoxProfile()                                         #
         browserProfile.set_preference('permissions.default.stylesheet', 1)                  #
         browserProfile.set_preference('permissions.default.image', 2)                       #
         browserProfile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false') #
-        browser = webdriver.Firefox(firefox_profile=browserProfile)                         #
-        browser.set_window_size(400, 600)                                                   #
+        #browser = webdriver.Firefox(firefox_profile=browserProfile)                         #
+        #browser.set_window_size(400, 600)                                                   #
+        #browser.set_page_load_timeout(TIME_OUT)                                             #
         #####################################################################################
 
     except configparser.NoSectionError as e:
@@ -39,22 +46,29 @@ def readconfigfile(file = 'config.ini'):
 
 def aggregatedata(file):
 
-    data = []
-    with open(file, 'r') as csvfile:
+    films = []
+    films_temp = pd.read_html(io=XLSFILE, encoding='windows-1251', header=0)[0].values.tolist()
 
-        for line in csvfile:
+    LOGS.write('Total films export from Kinopoisk: ' + str(len(films_temp)) + '\n')
 
-            data_line = line.replace('\n', '').split(',')
-            if len(data_line[1]) == 0:
-                data_line[1] = data_line[0]
-                temp_dict = {'ru' : data_line[0], 'en' : data_line[1], 'year' : data_line[2][:4],
-                             'rating' : data_line[3]}
-                data.append(temp_dict)
-            else:
-                temp_dict = {'ru': data_line[0], 'en': data_line[1], 'year': data_line[2][:4],
-                             'rating': data_line[3]}
-                data.append(temp_dict)
-    return data
+    for film in films_temp:
+
+        if str(film[1]) != 'nan' and str(film[7]) != '-':
+            temp_dict = {'title': film[1], 'year': film[2][:4], 'rating' : film[7]}
+            films.append(temp_dict)
+
+        elif str(film[1]) == 'nan' and str(film[7]) != '-':
+            temp_dict = {'title': film[0], 'year': film[2][:4], 'rating': film[7]}
+            films.append(temp_dict)
+
+        else:
+            LOGS.write(strftime('%H:%M:%S ') + 'Film without rating: ' + str(film[0]) + '/' + str(film[1])
+                        + '/you rating: ' + str(film[7]) + 'from ' + XLSFILE + '\n')
+
+    LOGS.write('Total films for import to IMDb: ' + str(len(films)) + '\n')
+    LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
+    LOGS.close()
+    return films
 
 def authorization(page , mail, password):
 
@@ -100,17 +114,25 @@ def ratingtoimdb(data):
             sleep(2)
             select.click()
             sleep(0)
-            sleep(time_sleep)
+            sleep(TIME_SLEEP)
         except Exception as e:
             print('FAIL:', query)
-            sleep(time_sleep)
+            sleep(TIME_SLEEP)
 
 if __name__ == '__main__':
+
+    #try:
+    #    readconfigfile()
+    #    while IMDb_stat != True:
+    #        IMDb_stat = authorization(page=IMDb_auth, mail=IMDb_mail, password=IMDb_pass)
+    #    ratingtoimdb(data=aggregatedata(file=XLSFILE))
+    #except Exception as e:
+    #    print(e)
     try:
         readconfigfile()
-        while IMDb_stat != True:
-            IMDb_stat = authorization(page=IMDb_auth, mail=IMDb_mail, password=IMDb_pass)
-        ratingtoimdb(data=aggregatedata(file=CSVFILE))
+        aggregatedata(XLSFILE)
     except Exception as e:
         print(e)
+        LOGS.write(str(e) + '\n')
+        LOGS.close()
 
