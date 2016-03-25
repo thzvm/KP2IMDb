@@ -1,12 +1,76 @@
-START: 25/03/2016 23:52:34
+START: 26/03/2016 00:06:26
 Total films export from Kinopoisk: 645
-23:52:39 Film without rating: Мама/nan/you rating: -from kinopoisk.xls
-23:52:39 Film without rating: Зеленая миля/The Green Mile/you rating: -from kinopoisk.xls
-23:52:39 Film without rating: Шпион, выйди вон!/Tinker Tailor Soldier Spy/you rating: -from kinopoisk.xls
-23:52:39 Film without rating: Властелин колец: Возвращение Короля/The Lord of the Rings: The Return of the King/you rating: -from kinopoisk.xls
-23:52:39 Film without rating: Забриски Пойнт/Zabriskie Point/you rating: -from kinopoisk.xls
-23:52:39 Film without rating: Рокко и его братья/Rocco e i suoi fratelli/you rating: -from kinopoisk.xls
-23:52:39 Film without rating: На десять минут старше: Виолончель/Ten Minutes Older: The Cello/you rating: -from kinopoisk.xls
-23:52:39 Film without rating: 18 дырок, страсть на траве/Private Matador 9: 18 Holes, Passion on the Green/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: Мама/nan/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: Зеленая миля/The Green Mile/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: Шпион, выйди вон!/Tinker Tailor Soldier Spy/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: Властелин колец: Возвращение Короля/The Lord of the Rings: The Return of the King/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: Забриски Пойнт/Zabriskie Point/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: Рокко и его братья/Rocco e i suoi fratelli/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: На десять минут старше: Виолончель/Ten Minutes Older: The Cello/you rating: -from kinopoisk.xls
+00:06:53 Film without rating: 18 дырок, страсть на траве/Private Matador 9: 18 Holes, Passion on the Green/you rating: -from kinopoisk.xls
 Total films for import to IMDb: 637
-END: 25/03/2016 23:52:39
+an integer is required (got type str)
+END: 26/03/2016 00:07:04
+START: 26/03/2016 00:08:55
+Total films export from Kinopoisk: 645
+list index out of range
+END: 26/03/2016 00:09:41
+START: 26/03/2016 00:10:05
+[Errno 54] Connection reset by peer
+END: 26/03/2016 00:10:16
+START: 26/03/2016 00:10:44
+Total films export from Kinopoisk: 645
+00:10:55 Film without rating: Мама/nan/you rating: -from kinopoisk.xls
+00:10:55 Film without rating: Зеленая миля/The Green Mile/you rating: -from kinopoisk.xls
+00:10:55 Film without rating: Шпион, выйди вон!/Tinker Tailor Soldier Spy/you rating: -from kinopoisk.xls
+00:10:55 Film without rating: Властелин колец: Возвращение Короля/The Lord of the Rings: The Return of the King/you rating: -from kinopoisk.xls
+00:10:55 Film without rating: Забриски Пойнт/Zabriskie Point/you rating: -from kinopoisk.xls
+00:10:55 Film without rating: Рокко и его братья/Rocco e i suoi fratelli/you rating: -from kinopoisk.xls
+00:10:55 Film without rating: На десять минут старше: Виолончель/Ten Minutes Older: The Cello/you rating: -from kinopoisk.xls
+00:10:55 Film without rating: 18 дырок, страсть на траве/Private Matador 9: 18 Holes, Passion on the Green/you rating: -from kinopoisk.xls
+Total films for import to IMDb: 637
+END: 26/03/2016 00:10:55
+START: 26/03/2016 00:12:25
+Total films export from Kinopoisk: 645
+00:12:52 Film without rating: Мама/nan/you rating: -from kinopoisk.xls
+00:12:52 Film without rating: Зеленая миля/The Green Mile/you rating: -from kinopoisk.xls
+00:12:52 Film without rating: Шпион, выйди вон!/Tinker Tailor Soldier Spy/you rating: -from kinopoisk.xls
+00:12:52 Film without rating: Властелин колец: Возвращение Короля/The Lord of the Rings: The Return of the King/you rating: -from kinopoisk.xls
+00:12:52 Film without rating: Забриски Пойнт/Zabriskie Point/you rating: -from kinopoisk.xls
+00:12:52 Film without rating: Рокко и его братья/Rocco e i suoi fratelli/you rating: -from kinopoisk.xls
+00:12:52 Film without rating: На десять минут старше: Виолончель/Ten Minutes Older: The Cello/you rating: -from kinopoisk.xls
+00:12:52 Film without rating: 18 дырок, страсть на траве/Private Matador 9: 18 Holes, Passion on the Green/you rating: -from kinopoisk.xls
+Total films for import to IMDb: 637
+START: 26/03/2016 00:14:48
+Total films export from Kinopoisk: 645
+00:15:20 Film without rating: Мама/nan/you rating: -from kinopoisk.xls
+00:15:20 Film without rating: Зеленая миля/The Green Mile/you rating: -from kinopoisk.xls
+00:15:20 Film without rating: Шпион, выйди вон!/Tinker Tailor Soldier Spy/you rating: -from kinopoisk.xls
+00:15:20 Film without rating: Властелин колец: Возвращение Короля/The Lord of the Rings: The Return of the King/you rating: -from kinopoisk.xls
+00:15:20 Film without rating: Забриски Пойнт/Zabriskie Point/you rating: -from kinopoisk.xls
+00:15:20 Film without rating: Рокко и его братья/Rocco e i suoi fratelli/you rating: -from kinopoisk.xls
+00:15:20 Film without rating: На десять минут старше: Виолончель/Ten Minutes Older: The Cello/you rating: -from kinopoisk.xls
+00:15:20 Film without rating: 18 дырок, страсть на траве/Private Matador 9: 18 Holes, Passion on the Green/you rating: -from kinopoisk.xls
+Total films for import to IMDb: 637
+START: 26/03/2016 00:16:17
+Total films export from Kinopoisk: 645
+00:16:47 Film without rating: Мама/nan/you rating: -from kinopoisk.xls
+00:16:47 Film without rating: Зеленая миля/The Green Mile/you rating: -from kinopoisk.xls
+00:16:47 Film without rating: Шпион, выйди вон!/Tinker Tailor Soldier Spy/you rating: -from kinopoisk.xls
+00:16:47 Film without rating: Властелин колец: Возвращение Короля/The Lord of the Rings: The Return of the King/you rating: -from kinopoisk.xls
+00:16:47 Film without rating: Забриски Пойнт/Zabriskie Point/you rating: -from kinopoisk.xls
+00:16:47 Film without rating: Рокко и его братья/Rocco e i suoi fratelli/you rating: -from kinopoisk.xls
+00:16:47 Film without rating: На десять минут старше: Виолончель/Ten Minutes Older: The Cello/you rating: -from kinopoisk.xls
+00:16:47 Film without rating: 18 дырок, страсть на траве/Private Matador 9: 18 Holes, Passion on the Green/you rating: -from kinopoisk.xls
+Total films for import to IMDb: 637
+START: 26/03/2016 00:31:00
+Total films export from Kinopoisk: 645
+00:31:34 Film without rating: Мама/nan/you rating: -from kinopoisk.xls
+00:31:34 Film without rating: Зеленая миля/The Green Mile/you rating: -from kinopoisk.xls
+00:31:34 Film without rating: Шпион, выйди вон!/Tinker Tailor Soldier Spy/you rating: -from kinopoisk.xls
+00:31:34 Film without rating: Властелин колец: Возвращение Короля/The Lord of the Rings: The Return of the King/you rating: -from kinopoisk.xls
+00:31:34 Film without rating: Забриски Пойнт/Zabriskie Point/you rating: -from kinopoisk.xls
+00:31:34 Film without rating: Рокко и его братья/Rocco e i suoi fratelli/you rating: -from kinopoisk.xls
+00:31:34 Film without rating: На десять минут старше: Виолончель/Ten Minutes Older: The Cello/you rating: -from kinopoisk.xls
+00:31:34 Film without rating: 18 дырок, страсть на траве/Private Matador 9: 18 Holes, Passion on the Green/you rating: -from kinopoisk.xls
+Total films for import to IMDb: 637

@@ -4,7 +4,7 @@ from time import sleep, strftime
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-def readconfigfile(file = 'config.ini'):
+def initialization(file = 'config.ini'):
 
     global XLSFILE, TXTLOGS, TIME_OUT, TIME_SLEEP, CSS, IMG, FLV, \
         IMDb_mail, IMDb_pass, IMDb_auth, IMDb_stat, browser, LOGS
@@ -16,8 +16,8 @@ def readconfigfile(file = 'config.ini'):
 
         XLSFILE     = config.get('SETTINGS', 'FILE')
         TXTLOGS     = config.get('SETTINGS', 'LOGS')
-        TIME_OUT    = config.get('SETTINGS', 'TIME_OUT')
-        TIME_SLEEP  = config.get('SETTINGS', 'TIME_SLEEP')
+        TIME_OUT    = int(config.get('SETTINGS', 'TIME_OUT'))
+        TIME_SLEEP  = int(config.get('SETTINGS', 'TIME_SLEEP'))
         CSS         = config.get('BROWSER', 'CSS')
         IMG         = config.get('BROWSER', 'IMG')
         FLV         = config.get('BROWSER', 'FLV')
@@ -34,9 +34,9 @@ def readconfigfile(file = 'config.ini'):
         browserProfile.set_preference('permissions.default.stylesheet', 1)                  #
         browserProfile.set_preference('permissions.default.image', 2)                       #
         browserProfile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false') #
-        #browser = webdriver.Firefox(firefox_profile=browserProfile)                         #
-        #browser.set_window_size(400, 600)                                                   #
-        #browser.set_page_load_timeout(TIME_OUT)                                             #
+        browser = webdriver.Firefox(firefox_profile=browserProfile)                         #
+        browser.set_window_size(350, 650)                                                   #
+        browser.set_page_load_timeout(TIME_OUT)                                             #
         #####################################################################################
 
     except configparser.NoSectionError as e:
@@ -44,10 +44,10 @@ def readconfigfile(file = 'config.ini'):
     except configparser.NoOptionError as e:
         print(file, 'error:', e)
 
-def aggregatedata(file):
+def export_from_kp(file):
 
     films = []
-    films_temp = pd.read_html(io=XLSFILE, encoding='windows-1251', header=0)[0].values.tolist()
+    films_temp = pd.read_html(io=file, encoding='windows-1251', header=0)[0].values.tolist()
 
     LOGS.write('Total films export from Kinopoisk: ' + str(len(films_temp)) + '\n')
 
@@ -66,8 +66,7 @@ def aggregatedata(file):
                         + '/you rating: ' + str(film[7]) + 'from ' + XLSFILE + '\n')
 
     LOGS.write('Total films for import to IMDb: ' + str(len(films)) + '\n')
-    LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
-    LOGS.close()
+    print(films)
     return films
 
 def authorization(page , mail, password):
@@ -93,11 +92,12 @@ def authorization(page , mail, password):
         except:
             return False
 
-def ratingtoimdb(data):
+def import_to_imdb(data):
+    browser.get('http://m.imdb.com')
+    assert "IMDb" in browser.title
+
     for i in range(len(data)):
-        browser.get('http://m.imdb.com')
-        assert "IMDb" in browser.title
-        query = data[i]['en']
+        query = data[i]['title']
         find = browser.find_element_by_name("q")
         find.send_keys(query)
         find.send_keys(Keys.RETURN)
@@ -122,17 +122,25 @@ def ratingtoimdb(data):
 if __name__ == '__main__':
 
     #try:
-    #    readconfigfile()
-    #    while IMDb_stat != True:
-    #        IMDb_stat = authorization(page=IMDb_auth, mail=IMDb_mail, password=IMDb_pass)
-    #    ratingtoimdb(data=aggregatedata(file=XLSFILE))
+        initialization()
+        while IMDb_stat != True:
+            IMDb_stat = authorization(page=IMDb_auth, mail=IMDb_mail, password=IMDb_pass)
+        import_to_imdb(data=export_from_kp(file=XLSFILE))
+        export_from_kp(file=XLSFILE)
+     #   LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
+    #    LOGS.close()
+
     #except Exception as e:
     #    print(e)
-    try:
-        readconfigfile()
-        aggregatedata(XLSFILE)
-    except Exception as e:
-        print(e)
-        LOGS.write(str(e) + '\n')
-        LOGS.close()
+    #    LOGS.write(str(e) + '\n')
+    #    LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
+    #   LOGS.close()
+
+    #try:
+    #    initialization()
+    #    export_from_kp(XLSFILE)
+    #except Exception as e:
+    #    print(e)
+    #    LOGS.write(str(e) + '\n')
+    #    LOGS.close()
 
