@@ -44,35 +44,35 @@ def initialization(file = 'config.ini'):
     except configparser.NoOptionError as e:
         print(file, 'error:', e)
 
+def translate(title):
+
+    dict = {'А': 'A', 'а': 'a', 'Б': 'B', 'б': 'b', 'В': 'V',
+                    'в': 'v', 'Г': 'G', 'г': 'g', 'Д': 'D', 'д': 'd',
+                    'Е': 'E', 'е': 'e', 'Ё': 'Yo', 'ё': 'yo', 'Ж': 'Zh',
+                    'ж': 'zh', 'З': 'Z', 'з': 'z', 'И': 'I', 'и': 'i',
+                    'Й': 'J', 'й': 'j', 'К': 'K', 'к': 'k', 'Л': 'L',
+                    'л': 'l', 'М': 'M', 'м': 'm', 'Н': 'N', 'н': 'n',
+                    'О': 'O', 'о': 'o', 'П': 'P', 'п': 'p', 'Р': 'R',
+                    'р': 'r', 'С': 'S', 'с': 's', 'Т': 'T', 'т': 't',
+                    'У': 'U', 'у': 'u', 'Ф': 'F', 'ф': 'f', 'Х': 'H',
+                    'х': 'h', 'Ц': 'C', 'ц': 'c', 'Ч': 'Ch', 'ч': 'ch',
+                    'Ш': 'Sh', 'ш': 'sh', 'Щ': 'Shh', 'щ': 'shh', 'Ъ': "'",
+                    'ъ': "'", 'Ы': 'Y', 'ы': 'y', 'Ь': '"', 'ь': '"',
+                    'Э': 'E', 'э': 'e', 'Ю': 'Yu', 'ю': 'yu', 'Я': 'Ya',
+                    'я': 'ya'}
+
+    title = list(title)
+    string = ''
+
+    for i in range(len(title)):
+        try:
+            string += dict[title[i]]
+        except KeyError:
+            string += title[i]
+
+    return string
+
 def export_from_kp(file):
-
-    def translate(title):
-
-        dict = {'А': 'A', 'а': 'a', 'Б': 'B', 'б': 'b', 'В': 'V',
-                'в': 'v', 'Г': 'G', 'г': 'g', 'Д': 'D', 'д': 'd',
-                'Е': 'E', 'е': 'e', 'Ё': 'Yo', 'ё': 'yo', 'Ж': 'Zh',
-                'ж': 'zh', 'З': 'Z', 'з': 'z', 'И': 'I', 'и': 'i',
-                'Й': 'J', 'й': 'j', 'К': 'K', 'к': 'k', 'Л': 'L',
-                'л': 'l', 'М': 'M', 'м': 'm', 'Н': 'N', 'н': 'n',
-                'О': 'O', 'о': 'o', 'П': 'P', 'п': 'p', 'Р': 'R',
-                'р': 'r', 'С': 'S', 'с': 's', 'Т': 'T', 'т': 't',
-                'У': 'U', 'у': 'u', 'Ф': 'F', 'ф': 'f', 'Х': 'H',
-                'х': 'h', 'Ц': 'C', 'ц': 'c', 'Ч': 'Ch', 'ч': 'ch',
-                'Ш': 'Sh', 'ш': 'sh', 'Щ': 'Shh', 'щ': 'shh', 'Ъ': "'",
-                'ъ': "'", 'Ы': 'Y', 'ы': 'y', 'Ь': '"', 'ь': '"',
-                'Э': 'E', 'э': 'e', 'Ю': 'Yu', 'ю': 'yu', 'Я': 'Ya',
-                'я': 'ya'}
-
-        title = list(title)
-        string = ''
-
-        for i in range(len(title)):
-            try:
-                string += dict[title[i]]
-            except KeyError:
-                string += title[i]
-
-        return string
 
     films = []
     films_temp = pd.read_html(io=file, encoding='windows-1251', header=0)[0].values.tolist()
@@ -82,11 +82,11 @@ def export_from_kp(file):
     for film in films_temp:
 
         if str(film[1]) != 'nan' and str(film[7]) != '-':
-            temp_dict = {'title': film[1], 'year': film[2][:4], 'rating' : film[7]}
-            films.append(temp_dict)
+            temp_dict = {'lang' : 'en', 'title': film[1], 'year': film[2][:4], 'rating' : film[7]}
+            #films.append(temp_dict)
 
         elif str(film[1]) == 'nan' and str(film[7]) != '-':
-            temp_dict = {'title': translate(film[0]), 'year': film[2][:4], 'rating': film[7]}
+            temp_dict = {'lang' : 'ru', 'title': film[0], 'year': film[2][:4], 'rating': film[7]}
             films.append(temp_dict)
             print(temp_dict)
 
@@ -95,7 +95,6 @@ def export_from_kp(file):
                         + '/you rating: ' + str(film[7]) + 'from ' + XLSFILE + '\n')
 
     LOGS.write('Total films for import to IMDb: ' + str(len(films)) + '\n')
-    print(films)
     return films
 
 def authorization(page , mail, password):
@@ -125,51 +124,97 @@ def import_to_imdb(data):
     browser.get('http://m.imdb.com')
     assert "IMDb" in browser.title
 
+    def yearKPIMDb(KP, IMDb):
+        title = str(IMDb.find_element_by_xpath('//div[@class="title"]').text)
+        title = title.split(' (')
+        if int(title[1][-5:-1]) == int(KP):
+            return True
+        else:
+            return False
+
     for i in range(len(data)):
-        query = data[i]['title']
-        find = browser.find_element_by_name("q")
-        find.send_keys(query)
-        find.send_keys(Keys.RETURN)
-        assert "No Results" not in browser.page_source
         try:
+            if data[i]['lang'] == 'en':
+                query = data[i]['title'] + ' ' + data[i]['year']
+                find = browser.find_element_by_name("q")
+                find.send_keys(query)
+                find.send_keys(Keys.RETURN)
+
+                if "No Results" in browser.page_source:
+                    query = data[i]['title']
+                    find = browser.find_element_by_name("q")
+                    find.send_keys(query)
+                    find.send_keys(Keys.RETURN)
+                    if "No Results" in browser.page_source:
+                        raise NameError
+                    if yearKPIMDb(KP=data[i]['year'], IMDb=browser) == False:
+                        raise NameError
+
+                if yearKPIMDb(KP=data[i]['year'], IMDb=browser) == False:
+                    raise NameError
+
+            elif data[i]['lang'] == 'ru':
+                query = data[i]['title']
+                find = browser.find_element_by_name("q")
+                find.send_keys(query)
+                find.send_keys(Keys.RETURN)
+
+                if "No Results" in browser.page_source:
+                    query = translate(data[i]['title'])
+                    find = browser.find_element_by_name("q")
+                    find.send_keys(query)
+                    find.send_keys(Keys.RETURN)
+                    if "No Results" in browser.page_source:
+                        raise NameError
+                    if yearKPIMDb(KP=data[i]['year'], IMDb=browser) == False:
+                        raise NameError
+
+                if yearKPIMDb(KP=data[i]['year'], IMDb=browser) == False:
+                    raise NameError
+
+        except NameError:
+            print(data[i]['lang'], data[i]['title'], data[i]['year'])
+            '''try:
             title = str(browser.find_element_by_xpath('//div[@class="title"]').text)
-            title = title.split(' (')
-            result = browser.find_element_by_link_text(title[0])
-            result.send_keys(Keys.ENTER)
+            #print(title)
+            #title = title.split(' (')
+            #print(int(title[1][-5:-1]))
+            #print(int(data[i]['year']))
+            #if int(title[1][-5:-1]) == int(data[i]['year']):
+            #    print('True')
+            #else:
+            #    print('False')
+            #print(query)
+            #print(title)
+            #print('________________')
+            #result = browser.find_element_by_link_text(title[0])
+            #result.send_keys(Keys.ENTER)
             assert "No results found." not in browser.page_source
-            select = browser.find_element_by_name('rating')
-            select.send_keys(int(data[i]['rating']))
-            select.click()
-            sleep(2)
-            select.click()
-            sleep(0)
-            sleep(TIME_SLEEP)
+            #select = browser.find_element_by_name('rating')
+            #select.send_keys(int(data[i]['rating']))
+            #select.click()
+            #sleep(2)
+            #select.click()
+            #sleep(0)
+            #sleep(TIME_SLEEP)
         except Exception as e:
             print('FAIL:', query)
-            sleep(TIME_SLEEP)
+            sleep(TIME_SLEEP)'''
 
 if __name__ == '__main__':
 
-    #try:
+    try:
         initialization()
         #while IMDb_stat != True:
         #    IMDb_stat = authorization(page=IMDb_auth, mail=IMDb_mail, password=IMDb_pass)
-        #import_to_imdb(data=export_from_kp(file=XLSFILE))
+        import_to_imdb(data=export_from_kp(file=XLSFILE))
         export_from_kp(file=XLSFILE)
-     #   LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
-    #    LOGS.close()
+        LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
+        LOGS.close()
 
-    #except Exception as e:
-    #    print(e)
-    #    LOGS.write(str(e) + '\n')
-    #    LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
-    #   LOGS.close()
-
-    #try:
-    #    initialization()
-    #    export_from_kp(XLSFILE)
-    #except Exception as e:
-    #    print(e)
-    #    LOGS.write(str(e) + '\n')
-    #    LOGS.close()
+    except Exception as e:
+        print(e)
+        LOGS.write(str(e) + '\n')
+        LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
+        LOGS.close()
 
