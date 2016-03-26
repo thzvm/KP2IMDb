@@ -46,6 +46,34 @@ def initialization(file = 'config.ini'):
 
 def export_from_kp(file):
 
+    def translate(title):
+
+        dict = {'А': 'A', 'а': 'a', 'Б': 'B', 'б': 'b', 'В': 'V',
+                'в': 'v', 'Г': 'G', 'г': 'g', 'Д': 'D', 'д': 'd',
+                'Е': 'E', 'е': 'e', 'Ё': 'Yo', 'ё': 'yo', 'Ж': 'Zh',
+                'ж': 'zh', 'З': 'Z', 'з': 'z', 'И': 'I', 'и': 'i',
+                'Й': 'J', 'й': 'j', 'К': 'K', 'к': 'k', 'Л': 'L',
+                'л': 'l', 'М': 'M', 'м': 'm', 'Н': 'N', 'н': 'n',
+                'О': 'O', 'о': 'o', 'П': 'P', 'п': 'p', 'Р': 'R',
+                'р': 'r', 'С': 'S', 'с': 's', 'Т': 'T', 'т': 't',
+                'У': 'U', 'у': 'u', 'Ф': 'F', 'ф': 'f', 'Х': 'H',
+                'х': 'h', 'Ц': 'C', 'ц': 'c', 'Ч': 'Ch', 'ч': 'ch',
+                'Ш': 'Sh', 'ш': 'sh', 'Щ': 'Shh', 'щ': 'shh', 'Ъ': "'",
+                'ъ': "'", 'Ы': 'Y', 'ы': 'y', 'Ь': '"', 'ь': '"',
+                'Э': 'E', 'э': 'e', 'Ю': 'Yu', 'ю': 'yu', 'Я': 'Ya',
+                'я': 'ya'}
+
+        title = list(title)
+        string = ''
+
+        for i in range(len(title)):
+            try:
+                string += dict[title[i]]
+            except KeyError:
+                string += title[i]
+
+        return string
+
     films = []
     films_temp = pd.read_html(io=file, encoding='windows-1251', header=0)[0].values.tolist()
 
@@ -58,8 +86,9 @@ def export_from_kp(file):
             films.append(temp_dict)
 
         elif str(film[1]) == 'nan' and str(film[7]) != '-':
-            temp_dict = {'title': film[0], 'year': film[2][:4], 'rating': film[7]}
+            temp_dict = {'title': translate(film[0]), 'year': film[2][:4], 'rating': film[7]}
             films.append(temp_dict)
+            print(temp_dict)
 
         else:
             LOGS.write(strftime('%H:%M:%S ') + 'Film without rating: ' + str(film[0]) + '/' + str(film[1])
@@ -101,7 +130,7 @@ def import_to_imdb(data):
         find = browser.find_element_by_name("q")
         find.send_keys(query)
         find.send_keys(Keys.RETURN)
-        assert "No results found." not in browser.page_source
+        assert "No Results" not in browser.page_source
         try:
             title = str(browser.find_element_by_xpath('//div[@class="title"]').text)
             title = title.split(' (')
@@ -123,9 +152,9 @@ if __name__ == '__main__':
 
     #try:
         initialization()
-        while IMDb_stat != True:
-            IMDb_stat = authorization(page=IMDb_auth, mail=IMDb_mail, password=IMDb_pass)
-        import_to_imdb(data=export_from_kp(file=XLSFILE))
+        #while IMDb_stat != True:
+        #    IMDb_stat = authorization(page=IMDb_auth, mail=IMDb_mail, password=IMDb_pass)
+        #import_to_imdb(data=export_from_kp(file=XLSFILE))
         export_from_kp(file=XLSFILE)
      #   LOGS.write('END: ' + strftime('%d/%m/%Y %H:%M:%S') + '\n')
     #    LOGS.close()
