@@ -1,0 +1,28 @@
+[START]
+---;7 No Man's Land 2001
+---;6 Шапито-шоу: Уважение и сотрудничество 2011
+---;3 Шапито-шоу: Любовь и дружба 2011
+---;7 Birdman or (The Unexpected Virtue of Ignorance) 2014
+---;8 Song to Say Goodbye 2006
+---;9 Fargo 1995
+---;10 Ket felido a pokolban 1963
+---;1 Газгольдер: Фильм 2014
+---;7 No Comment 2012
+---;6 L' Argent 1983
+---;10 Age 7 in the USSR 1991
+---;6 Игла 1988
+---;7 Manhattan 1979
+---;10 Ladri di biciclette 1948
+---;7 Снежная королева 1957
+---;9 Война и мир 1965
+---;6 Underground 1995
+---;7 В бой идут одни «старики» 1973
+---;9 Le professionnel 1981
+---;8 12 2007
+---;8 Мастер и Маргарита 2005
+---;10 Возвращение 2003
+---;8 Apocalypse Now 1979
+---;10 &1;ivot je čudo 2004
+---;10  2003
+[TOTAL] - [25]
+[END}
